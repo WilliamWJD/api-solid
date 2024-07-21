@@ -1,4 +1,4 @@
-import { expect, describe, it, beforeAll, beforeEach } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { compare } from 'bcryptjs'
 
 import { RegisterUseCase } from './register'
