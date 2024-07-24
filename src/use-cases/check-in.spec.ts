@@ -28,8 +28,8 @@ describe('Check In Use Case', () => {
       title: 'Javascript Gym',
       description: '',
       phone: '',
-      latitude: new Decimal(0),
-      longitude: new Decimal(0),
+      latitude: new Decimal(-22.7671207),
+      longitude: new Decimal(-47.1424631),
     })
 
     // MOCK DA DATAS
@@ -51,8 +51,8 @@ describe('Check In Use Case', () => {
     const { checkIn } = await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: createdUser.id,
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -22.7671207,
+      userLongitude: -47.1424631,
     })
 
     console.log(checkIn.created_at)
@@ -66,16 +66,16 @@ describe('Check In Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'user-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -22.7671207,
+      userLongitude: -47.1424631,
     })
 
     expect(async () => {
       await checkInUseCase.execute({
         gymId: 'gym-01',
         userId: 'user-01',
-        userLatitude: 0,
-        userLongitude: 0,
+        userLatitude: -22.7671207,
+        userLongitude: -47.1424631,
       })
     }).rejects.toBeInstanceOf(Error)
   })
@@ -86,8 +86,8 @@ describe('Check In Use Case', () => {
     await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'user-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -22.7671207,
+      userLongitude: -47.1424631,
     })
 
     vi.setSystemTime(new Date(2024, 0, 21, 8, 0, 0))
@@ -95,10 +95,27 @@ describe('Check In Use Case', () => {
     const { checkIn } = await checkInUseCase.execute({
       gymId: 'gym-01',
       userId: 'user-01',
-      userLatitude: 0,
-      userLongitude: 0,
+      userLatitude: -22.7671207,
+      userLongitude: -47.1424631,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to check in on distant gym', async () => {
+    const createdUser = await userRepository.create({
+      name: 'John Doe',
+      email: 'john@email.com',
+      password_hash: await hash('123456789', 6),
+    })
+
+    expect(async () => {
+      await checkInUseCase.execute({
+        gymId: 'gym-01',
+        userId: createdUser.id,
+        userLatitude: -22.8264743,
+        userLongitude: -47.1849677,
+      })
+    }).rejects.toBeInstanceOf(Error)
   })
 })
