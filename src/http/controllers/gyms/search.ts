@@ -8,7 +8,7 @@ export async function search(request: FastifyRequest, reply: FastifyReply) {
     page: z.coerce.number().min(1).default(1),
   })
 
-  const { q, page } = searchGymsQuerySchea.parse(request.params)
+  const { q, page } = searchGymsQuerySchea.parse(request.query)
 
   const searchGymsUseCase = MakeSearchGymsUseCase()
 
