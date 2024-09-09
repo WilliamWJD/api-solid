@@ -9,9 +9,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm' #cria cache para reaproveitar a instalação de libs caso não tenha lib nova
+
       - run: npm ci # instala dependencias
+
       - run: npm run test # executa os testes
