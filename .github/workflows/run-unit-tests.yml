@@ -13,8 +13,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm' #cria cache para reaproveitar a instalação de libs caso não tenha lib nova
+          cache: 'npm'
 
+      - run: rm -rf node_modules # remove node_modules antes da instalação
       - run: npm ci # instala dependencias
 
       - run: npm run test # executa os testes
